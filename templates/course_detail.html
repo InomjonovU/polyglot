@@ -1,0 +1,368 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }} - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <a href="{% url 'courses_list' %}">Kurslar</a>
+                <span>/</span>
+                <span class="current">{{ course.title }}</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- Course Detail Section -->
+<section class="detail-section">
+    <div class="container">
+        <div class="detail-grid">
+            <!-- Main Content -->
+            <div class="detail-main">
+                <!-- Course Image -->
+                <div class="course-detail-image" data-aos="fade-up">
+                    {% if course.main_image %}
+                    <img src="{{ course.main_image.url }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=450&fit=crop" alt="{{ course.title }}">
+                    {% endif %}
+                </div>
+                
+                <!-- Course Header -->
+                <div class="course-detail-header" data-aos="fade-up">
+                    <span class="course-subject">{{ course.subject.name }}</span>
+                    <h1 class="course-detail-title">{{ course.title }}</h1>
+                    <div class="course-detail-meta">
+                        <span class="course-detail-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ course.duration_months }} oy
+                        </span>
+                        <span class="course-detail-meta-item">
+                            <i class="fas fa-signal"></i>
+                            {{ course.get_level_display }}
+                        </span>
+                        <span class="course-detail-meta-item">
+                            <i class="fas fa-calendar-week"></i>
+                            Haftada {{ course.lessons_per_week }} marta
+                        </span>
+                        <span class="course-detail-meta-item">
+                            <i class="fas fa-stopwatch"></i>
+                            {{ course.lesson_duration }} daqiqa
+                        </span>
+                        <span class="course-detail-meta-item">
+                            <i class="fas fa-eye"></i>
+                            {{ course.views_count }} ko'rilgan
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Course Content -->
+                <div class="course-detail-content" data-aos="fade-up">
+                    <h3>Kurs haqida</h3>
+                    <p>{{ course.full_description|linebreaks }}</p>
+                    
+                    {% if course.what_you_learn %}
+                    <h3>Nimalarni o'rganasiz?</h3>
+                    <ul class="course-detail-list">
+                        {% for item in course.what_you_learn.splitlines %}
+                        {% if item.strip %}
+                        <li>{{ item.strip }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    {% if course.requirements %}
+                    <h3>Talablar</h3>
+                    <ul class="course-detail-list">
+                        {% for item in course.requirements.splitlines %}
+                        {% if item.strip %}
+                        <li>{{ item.strip }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    {% if course.target_audience %}
+                    <h3>Kimlar uchun mo'ljallangan?</h3>
+                    <ul class="course-detail-list">
+                        {% for item in course.target_audience.splitlines %}
+                        {% if item.strip %}
+                        <li>{{ item.strip }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    {% if course.syllabus %}
+                    <h3>O'quv dasturi</h3>
+                    <p>{{ course.syllabus|linebreaks }}</p>
+                    {% endif %}
+                    
+                    {% if course.expected_results %}
+                    <h3>Kutilayotgan natijalar</h3>
+                    <p>{{ course.expected_results|linebreaks }}</p>
+                    {% endif %}
+                    
+                    {% if course.certificate_info %}
+                    <h3>Sertifikat</h3>
+                    <p>{{ course.certificate_info|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Teachers -->
+                {% if course.teachers.exists %}
+                <div class="mt-5" data-aos="fade-up">
+                    <h3 style="margin-bottom: var(--space-lg);">O'qituvchilar</h3>
+                    <div class="teachers-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                        {% for teacher in course.teachers.all %}
+                        <div class="teacher-card">
+                            <div class="teacher-image">
+                                {% if teacher.photo %}
+                                <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                                {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ teacher.full_name|urlencode }}&background=3b82f6&color=fff&size=200" alt="{{ teacher.full_name }}">
+                                {% endif %}
+                            </div>
+                            <div class="teacher-content">
+                                <h3 class="teacher-name">
+                                    <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+                                </h3>
+                                <p class="teacher-role">
+                                    {% if teacher.ielts_score %}IELTS {{ teacher.ielts_score }}{% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="detail-sidebar">
+                <!-- Enrollment Card -->
+                <div class="sidebar-card" data-aos="fade-left">
+                    <div class="sidebar-price">
+                        {% if course.has_discount %}
+                        <span class="sidebar-price-value">{{ course.discount_price|floatformat:0 }} so'm</span>
+                        <span class="sidebar-price-old">{{ course.price|floatformat:0 }} so'm</span>
+                        {% else %}
+                        <span class="sidebar-price-value">{{ course.price|floatformat:0 }} so'm</span>
+                        {% endif %}
+                        <p class="sidebar-price-label">oyiga</p>
+                    </div>
+                    
+                    <div class="sidebar-info">
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">
+                                <i class="fas fa-clock"></i>
+                                Davomiyligi
+                            </span>
+                            <span class="sidebar-info-value">{{ course.duration_months }} oy</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">
+                                <i class="fas fa-signal"></i>
+                                Daraja
+                            </span>
+                            <span class="sidebar-info-value">{{ course.get_level_display }}</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">
+                                <i class="fas fa-calendar-week"></i>
+                                Haftada
+                            </span>
+                            <span class="sidebar-info-value">{{ course.lessons_per_week }} marta</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">
+                                <i class="fas fa-stopwatch"></i>
+                                Dars davomiyligi
+                            </span>
+                            <span class="sidebar-info-value">{{ course.lesson_duration }} daqiqa</span>
+                        </div>
+                        {% if course.start_date %}
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">
+                                <i class="fas fa-play-circle"></i>
+                                Boshlanish
+                            </span>
+                            <span class="sidebar-info-value">{{ course.start_date|date:"d M, Y" }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100" data-modal="enrollModal">
+                        <span>Kursga yozilish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+                    <a href="tel:{{ settings.phone_primary }}" class="btn btn-secondary btn-lg w-100 mt-2">
+                        <i class="fas fa-phone"></i>
+                        <span>Qo'ng'iroq qilish</span>
+                    </a>
+                </div>
+                
+                <!-- Share Card -->
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+                    <h4 style="margin-bottom: var(--space-md);">Ulashish</h4>
+                    <div class="d-flex gap-2">
+                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ course.title }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ course.title }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="testimonials-section section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title" style="color: white;">Bu kurs haqida <span style="color: var(--primary-300);">fikrlar</span></h2>
+        </div>
+        
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="testimonial-header">
+                    {% if testimonial.student_photo %}
+                    <img src="{{ testimonial.student_photo.url }}" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ testimonial.student_name|urlencode }}&background=3b82f6&color=fff&size=60" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% endif %}
+                    <div class="testimonial-info">
+                        <h4>{{ testimonial.student_name }}</h4>
+                    </div>
+                </div>
+                <div class="testimonial-rating">
+                    {% for i in "12345" %}
+                    <i class="fas fa-star{% if forloop.counter > testimonial.rating %}-o{% endif %}"></i>
+                    {% endfor %}
+                </div>
+                <p class="testimonial-text">{{ testimonial.comment }}</p>
+                {% if testimonial.achievement %}
+                <span class="testimonial-achievement">
+                    <i class="fas fa-trophy"></i>
+                    {{ testimonial.achievement }}
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Related Courses -->
+{% if related_courses %}
+<section class="related-section">
+    <div class="container">
+        <div class="related-header">
+            <h2 class="related-title">O'xshash kurslar</h2>
+            <a href="{% url 'courses_list' %}?subject={{ course.subject.slug }}" class="related-link">
+                <span>Barchasini ko'rish</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="courses-grid">
+            {% for related in related_courses %}
+            <div class="course-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="course-image">
+                    {% if related.main_image %}
+                    <img src="{{ related.main_image.url }}" alt="{{ related.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop" alt="{{ related.title }}">
+                    {% endif %}
+                </div>
+                <div class="course-content">
+                    <span class="course-subject">{{ related.subject.name }}</span>
+                    <h3 class="course-title">
+                        <a href="{% url 'course_detail' related.slug %}">{{ related.title }}</a>
+                    </h3>
+                    <div class="course-meta">
+                        <span class="course-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ related.duration_months }} oy
+                        </span>
+                        <span class="course-meta-item">
+                            <i class="fas fa-signal"></i>
+                            {{ related.get_level_display }}
+                        </span>
+                    </div>
+                    <div class="course-footer">
+                        <div class="course-price">
+                            {{ related.final_price|floatformat:0 }} so'm
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Enrollment Modal -->
+<div class="modal" id="enrollModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Kursga yozilish</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <form method="POST" action="{% url 'course_enroll' course.slug %}">
+            {% csrf_token %}
+            <div class="modal-body">
+                <p style="color: var(--gray-600); margin-bottom: var(--space-lg);">
+                    <strong>{{ course.title }}</strong> kursiga yozilish uchun quyidagi ma'lumotlarni to'ldiring.
+                </p>
+                
+                <div class="form-group">
+                    <label class="form-label required">To'liq ismingiz</label>
+                    <input type="text" name="full_name" class="form-input" placeholder="Ismingiz Familiyangiz" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Telefon raqam</label>
+                    <input type="tel" name="phone" class="form-input" placeholder="+998 90 123 45 67" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email (ixtiyoriy)</label>
+                    <input type="email" name="email" class="form-input" placeholder="email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Xabar yoki savol (ixtiyoriy)</label>
+                    <textarea name="message" class="form-textarea" rows="3" placeholder="Qo'shimcha ma'lumot yoki savollaringiz..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline modal-close">Bekor qilish</button>
+                <button type="submit" class="btn btn-primary">
+                    <span>Yuborish</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

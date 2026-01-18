@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Qidiruv{% if query %}: {{ query }}{% endif %} - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Qidiruv</span>
+            </nav>
+            <h1 class="page-title">Sayt bo'ylab <span class="text-gradient">qidiruv</span></h1>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section">
+    <div class="container">
+        <!-- Search Form -->
+        <div class="search-form-large" data-aos="fade-up">
+            <form method="GET" action="">
+                <div class="search-input-wrapper">
+                    <input type="text" name="q" class="search-input" placeholder="Nimani qidiryapsiz?" value="{{ query }}">
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if query %}
+        <!-- Courses Results -->
+        {% if courses %}
+        <div class="search-results-section" data-aos="fade-up">
+            <h3 class="search-results-title">
+                <i class="fas fa-book" style="color: var(--primary-500);"></i>
+                Kurslar
+                <span>{{ courses|length }}</span>
+            </h3>
+            <div class="courses-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-image">
+                        {% if course.main_image %}
+                        <img src="{{ course.main_image.url }}" alt="{{ course.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop" alt="{{ course.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">
+                            <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                        </h3>
+                        <p class="course-desc">{{ course.short_description }}</p>
+                        <div class="course-footer">
+                            <div class="course-price">{{ course.final_price|floatformat:0 }} so'm</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Teachers Results -->
+        {% if teachers %}
+        <div class="search-results-section" data-aos="fade-up">
+            <h3 class="search-results-title">
+                <i class="fas fa-user-graduate" style="color: var(--primary-500);"></i>
+                O'qituvchilar
+                <span>{{ teachers|length }}</span>
+            </h3>
+            <div class="teachers-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                {% for teacher in teachers %}
+                <div class="teacher-card">
+                    <div class="teacher-image">
+                        {% if teacher.photo %}
+                        <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                        {% else %}
+                        <img src="https://ui-avatars.com/api/?name={{ teacher.full_name|urlencode }}&background=3b82f6&color=fff&size=200" alt="{{ teacher.full_name }}">
+                        {% endif %}
+                    </div>
+                    <div class="teacher-content">
+                        <h3 class="teacher-name">
+                            <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+                        </h3>
+                        <p class="teacher-role">{% if teacher.ielts_score %}IELTS {{ teacher.ielts_score }}{% endif %}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- News Results -->
+        {% if news %}
+        <div class="search-results-section" data-aos="fade-up">
+            <h3 class="search-results-title">
+                <i class="fas fa-newspaper" style="color: var(--primary-500);"></i>
+                Yangiliklar
+                <span>{{ news|length }}</span>
+            </h3>
+            <div class="news-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                {% for news_item in news %}
+                <div class="news-card">
+                    <div class="news-image">
+                        {% if news_item.main_image %}
+                        <img src="{{ news_item.main_image.url }}" alt="{{ news_item.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop" alt="{{ news_item.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">
+                            <a href="{% url 'news_detail' news_item.slug %}">{{ news_item.title }}</a>
+                        </h3>
+                        <p class="news-excerpt">{{ news_item.short_description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- No Results -->
+        {% if not courses and not teachers and not news %}
+        <div class="empty-state" data-aos="fade-up">
+            <div class="empty-state-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>"{{ query }}" bo'yicha hech narsa topilmadi</h3>
+            <p>Boshqa so'zlar bilan qidirib ko'ring</p>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <!-- Initial State -->
+        <div class="empty-state" data-aos="fade-up">
+            <div class="empty-state-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>Qidiruv so'zini kiriting</h3>
+            <p>Kurslar, o'qituvchilar va yangiliklarni qidiring</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

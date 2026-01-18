@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}O'qituvchi bo'lish - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">O'qituvchi bo'lish</span>
+            </nav>
+            <h1 class="page-title">Jamoamizga <span class="text-gradient">qo'shiling</span></h1>
+            <p class="page-desc">Tajribali o'qituvchi bo'lsangiz, bizning professional jamoamizga qo'shiling!</p>
+        </div>
+    </div>
+</section>
+
+<!-- Apply Section -->
+<section class="apply-section">
+    <div class="container">
+        <div class="apply-grid">
+            <!-- Form -->
+            <div class="apply-form-card" data-aos="fade-right">
+                <h3 class="apply-form-title">Ariza to'ldirish</h3>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+                        <div class="form-group">
+                            <label class="form-label required">Ism</label>
+                            <input type="text" name="first_name" class="form-input" placeholder="Ismingiz" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Familiya</label>
+                            <input type="text" name="last_name" class="form-input" placeholder="Familiyangiz" required>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+                        <div class="form-group">
+                            <label class="form-label required">Telefon</label>
+                            <input type="tel" name="phone" class="form-input" placeholder="+998 90 123 45 67" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Email</label>
+                            <input type="email" name="email" class="form-input" placeholder="email@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Ta'lim (universitet, kurs va h.k.)</label>
+                        <input type="text" name="education" class="form-input" placeholder="Masalan: TDPU, Ingliz tili va adabiyoti" required>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+                        <div class="form-group">
+                            <label class="form-label required">Tajriba (yillar)</label>
+                            <input type="number" name="experience_years" class="form-input" placeholder="3" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Ixtisoslik</label>
+                            <select name="subject" class="form-select" required>
+                                <option value="">Tanlang</option>
+                                {% for subject in subjects %}
+                                <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">O'zingiz haqingizda</label>
+                        <textarea name="about_me" class="form-textarea" rows="4" placeholder="O'zingiz, tajribangiz, qobiliyatlaringiz haqida yozing..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Nega o'qituvchi bo'lishni istaysiz?</label>
+                        <textarea name="why_teach" class="form-textarea" rows="3" placeholder="Motivatsiyangiz haqida yozing..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">CV / Resume</label>
+                        <div class="form-file">
+                            <input type="file" name="cv_file" accept=".pdf,.doc,.docx" required>
+                            <div class="form-file-label">
+                                <i class="fas fa-upload"></i>
+                                <span>CV faylini yuklang (PDF, DOC)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Sertifikatlar (ixtiyoriy)</label>
+                        <div class="form-file">
+                            <input type="file" name="certificates" accept=".pdf,.jpg,.jpeg,.png,.zip">
+                            <div class="form-file-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Sertifikatlarni yuklang</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Rasmingiz (ixtiyoriy)</label>
+                        <div class="form-file">
+                            <input type="file" name="photo" accept="image/*">
+                            <div class="form-file-label">
+                                <i class="fas fa-camera"></i>
+                                <span>Rasmingizni yuklang</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <span>Arizani yuborish</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Sidebar -->
+            <div>
+                <div class="apply-sidebar-card" data-aos="fade-left">
+                    <h3>Bizda ishlash afzalliklari</h3>
+                    <div class="apply-benefits">
+                        <div class="apply-benefit">
+                            <div class="apply-benefit-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="apply-benefit-content">
+                                <h4>Yuqori maosh</h4>
+                                <p>Tajribaga qarab raqobatbardosh maosh</p>
+                            </div>
+                        </div>
+                        <div class="apply-benefit">
+                            <div class="apply-benefit-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="apply-benefit-content">
+                                <h4>Moslashuvchan jadval</h4>
+                                <p>O'zingizga qulay vaqtda ishlash</p>
+                            </div>
+                        </div>
+                        <div class="apply-benefit">
+                            <div class="apply-benefit-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="apply-benefit-content">
+                                <h4>Kasbiy o'sish</h4>
+                                <p>Treninglar va malaka oshirish kurslari</p>
+                            </div>
+                        </div>
+                        <div class="apply-benefit">
+                            <div class="apply-benefit-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="apply-benefit-content">
+                                <h4>Professional jamoa</h4>
+                                <p>Do'stona va qo'llab-quvvatlovchi muhit</p>
+                            </div>
+                        </div>
+                        <div class="apply-benefit">
+                            <div class="apply-benefit-icon">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div class="apply-benefit-content">
+                                <h4>Zamonaviy resurslar</h4>
+                                <p>Eng yangi o'quv materiallari va texnologiyalar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card mt-4" data-aos="fade-left" data-aos-delay="100">
+                    <h4 style="margin-bottom: var(--space-md);">Savollaringiz bormi?</h4>
+                    <p style="color: var(--gray-600); margin-bottom: var(--space-lg);">Biz bilan bog'laning, barcha savollarga javob beramiz.</p>
+                    <a href="tel:{{ settings.phone_primary }}" class="btn btn-outline w-100">
+                        <i class="fas fa-phone"></i>
+                        <span>Qo'ng'iroq qilish</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sertifikat tekshirish - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <a href="{% url 'certificates' %}">Sertifikatlar</a>
+                <span>/</span>
+                <span class="current">Tekshirish</span>
+            </nav>
+            <h1 class="page-title">Sertifikat <span class="text-gradient">tekshirish</span></h1>
+            <p class="page-desc">Sertifikat haqiqiyligini tekshiring</p>
+        </div>
+    </div>
+</section>
+
+<!-- Verify Section -->
+<section class="verify-section">
+    <div class="container">
+        <div class="verify-card" data-aos="fade-up">
+            <div class="verify-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2 class="verify-title">Sertifikatni tekshiring</h2>
+            <p class="verify-desc">Sertifikat raqamini kiriting va uning haqiqiyligini tekshiring</p>
+            
+            <form method="POST" action="" class="verify-form">
+                {% csrf_token %}
+                <input type="text" name="certificate_number" class="form-input" placeholder="Sertifikat raqami (masalan: PLC-2024-001)" required>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    <span>Tekshirish</span>
+                </button>
+            </form>
+            
+            {% if certificate %}
+            <div class="verify-result success">
+                <div class="verify-result-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="color: var(--success);">Sertifikat haqiqiy!</h3>
+                
+                <div class="certificate-preview">
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">Talaba ismi:</span>
+                        <span class="certificate-preview-value">{{ certificate.student_name }}</span>
+                    </div>
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">Sertifikat raqami:</span>
+                        <span class="certificate-preview-value">{{ certificate.certificate_number }}</span>
+                    </div>
+                    {% if certificate.course %}
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">Kurs:</span>
+                        <span class="certificate-preview-value">{{ certificate.course.title }}</span>
+                    </div>
+                    {% endif %}
+                    {% if certificate.teacher %}
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">O'qituvchi:</span>
+                        <span class="certificate-preview-value">{{ certificate.teacher.full_name }}</span>
+                    </div>
+                    {% endif %}
+                    {% if certificate.score %}
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">Natija:</span>
+                        <span class="certificate-preview-value" style="color: var(--success); font-weight: 700;">{{ certificate.score }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="certificate-preview-row">
+                        <span class="certificate-preview-label">Berilgan sana:</span>
+                        <span class="certificate-preview-value">{{ certificate.issue_date|date:"d F, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Info Section -->
+<section class="section-sm" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h3 style="margin-bottom: var(--space-lg);">Sertifikat olish haqida</h3>
+            <p style="max-width: 700px; margin: 0 auto var(--space-xl); color: var(--gray-600);">
+                Kursni muvaffaqiyatli tamomlagan barcha talabalarga rasmiy sertifikat beriladi. 
+                Sertifikat raqami orqali uning haqiqiyligini istalgan vaqtda tekshirish mumkin.
+            </p>
+            <a href="{% url 'courses_list' %}" class="btn btn-primary">
+                <span>Kurslarni ko'rish</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

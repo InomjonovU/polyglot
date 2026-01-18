@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FAQ - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">FAQ</span>
+            </nav>
+            <h1 class="page-title">Ko'p beriladigan <span class="text-gradient">savollar</span></h1>
+            <p class="page-desc">Eng ko'p beriladigan savollar va ularga javoblar</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section-sm">
+    <div class="container">
+        {% if categories %}
+        {% for category in categories %}
+        <div class="mb-5" data-aos="fade-up">
+            <h3 style="margin-bottom: var(--space-lg);">{{ category.name }}</h3>
+            <div class="accordion">
+                {% for faq in faqs %}
+                {% if faq.category == category %}
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>{{ faq.question }}</span>
+                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            {{ faq.answer|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <!-- FAQs without category -->
+        {% for faq in faqs %}
+        {% if not faq.category %}
+        <div class="accordion mb-5" data-aos="fade-up">
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>{{ faq.question }}</span>
+                    <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        {{ faq.answer|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        
+        {% else %}
+        <div class="accordion" data-aos="fade-up">
+            {% for faq in faqs %}
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>{{ faq.question }}</span>
+                    <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        {{ faq.answer|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3>FAQ mavjud emas</h3>
+                <p>Tez orada savollar qo'shiladi</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Javob topa olmadingizmi?</h2>
+                <p class="cta-desc">Bizga to'g'ridan-to'g'ri murojaat qiling, barcha savollaringizga javob beramiz!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'contact' %}" class="btn btn-white btn-lg">
+                        <span>Bog'lanish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="tel:{{ settings.phone_primary }}" class="btn btn-outline btn-lg" style="border-color: rgba(255,255,255,0.3); color: white;">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ settings.phone_primary|default:"+998 90 123 45 67" }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

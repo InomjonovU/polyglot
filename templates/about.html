@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Biz haqimizda - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Biz haqimizda</span>
+            </nav>
+            <h1 class="page-title">Biz <span class="text-gradient">haqimizda</span></h1>
+            <p class="page-desc">PolyglotLC - professional til o'rganish markazi</p>
+        </div>
+    </div>
+</section>
+
+<!-- About Intro -->
+<section class="section-sm">
+    <div class="container">
+        <div class="about-intro">
+            <div class="about-image" data-aos="fade-right">
+                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&h=400&fit=crop" alt="PolyglotLC">
+                <div class="about-image-badge">
+                    <div class="about-image-badge-value">10+</div>
+                    <div class="about-image-badge-label">yillik tajriba</div>
+                </div>
+            </div>
+            
+            <div data-aos="fade-left">
+                <span class="section-label">
+                    <i class="fas fa-info-circle"></i>
+                    Kim biz?
+                </span>
+                <h2 style="margin-bottom: var(--space-lg);">Til o'rganishning <span class="text-gradient">yangi formati</span></h2>
+                <p style="font-size: 1.125rem; line-height: 1.8;">{{ settings.about_full|default:"PolyglotLC - bu zamonaviy ta'lim metodlari va tajribali o'qituvchilar jamoasi yordamida til o'rganishning eng samarali yo'lini taqdim etuvchi o'quv markazi. Biz har bir talabaning individual ehtiyojlarini hisobga olib, ularga maqsadlariga erishishda yordam beramiz." }}</p>
+                
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{% url 'courses_list' %}" class="btn btn-primary">
+                        <span>Kurslarni ko'rish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline">
+                        <span>Bog'lanish</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="section-sm" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="about-stats">
+            <div class="about-stat" data-aos="fade-up" data-aos-delay="0">
+                <div class="about-stat-value" data-counter="{{ students_count }}">0</div>
+                <div class="about-stat-label">Talabalar</div>
+            </div>
+            <div class="about-stat" data-aos="fade-up" data-aos-delay="100">
+                <div class="about-stat-value" data-counter="{{ teachers_count }}">0</div>
+                <div class="about-stat-label">O'qituvchilar</div>
+            </div>
+            <div class="about-stat" data-aos="fade-up" data-aos-delay="200">
+                <div class="about-stat-value" data-counter="{{ courses_count }}">0</div>
+                <div class="about-stat-label">Kurslar</div>
+            </div>
+            <div class="about-stat" data-aos="fade-up" data-aos-delay="300">
+                <div class="about-stat-value"><span data-counter="95">0</span>%</div>
+                <div class="about-stat-label">Muvaffaqiyat</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-star"></i>
+                Afzalliklarimiz
+            </span>
+            <h2 class="section-title">Nima uchun <span class="text-gradient">bizni tanlashadi?</span></h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Sertifikatlangan o'qituvchilar</h3>
+                <p>Barcha o'qituvchilarimiz xalqaro TESOL/CELTA sertifikatlariga ega</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Kommunikativ metodika</h3>
+                <p>Birinchi darsdan boshlab ingliz tilida muloqot qilishni o'rganasiz</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Kichik guruhlar</h3>
+                <p>8-10 kishilik guruhlar - har bir talabaga individual e'tibor</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Natijaga yo'naltirilgan</h3>
+                <p>IELTS, TOEFL va boshqa imtihonlarga kafolatlangan tayyorgarlik</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="testimonials-section section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-quote-left"></i>
+                Fikrlar
+            </span>
+            <h2 class="section-title" style="color: white;">Talabalarimiz <span style="color: var(--primary-300);">nima deydi?</span></h2>
+        </div>
+        
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="testimonial-header">
+                    {% if testimonial.student_photo %}
+                    <img src="{{ testimonial.student_photo.url }}" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ testimonial.student_name|urlencode }}&background=3b82f6&color=fff&size=60" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% endif %}
+                    <div class="testimonial-info">
+                        <h4>{{ testimonial.student_name }}</h4>
+                        {% if testimonial.course %}
+                        <p>{{ testimonial.course.title }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="testimonial-rating">
+                    {% for i in "12345" %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
+                </div>
+                <p class="testimonial-text">{{ testimonial.comment|truncatewords:25 }}</p>
+                {% if testimonial.achievement %}
+                <span class="testimonial-achievement">
+                    <i class="fas fa-trophy"></i>
+                    {{ testimonial.achievement }}
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Kelajakingizni bugunoq boshlang!</h2>
+                <p class="cta-desc">Bepul sinov darsiga yoziling va o'z imkoniyatlaringizni kashf eting!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'contact' %}" class="btn btn-white btn-lg">
+                        <span>Bepul dars olish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,421 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ settings.site_name|default:"PolyglotLC" }} - Til o'rganishning eng yaxshi yo'li{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-shapes">
+        <div class="hero-shape hero-shape-1"></div>
+        <div class="hero-shape hero-shape-2"></div>
+    </div>
+    
+    <div class="container">
+        <div class="hero-container">
+            <div class="hero-content" data-aos="fade-right">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    <span>O'zbekistondagi eng yaxshi til markazi</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Til o'rganishning <span class="highlight">yangi davri</span> boshlandi
+                </h1>
+                
+                <p class="hero-desc">
+                    Zamonaviy metodlar, tajribali o'qituvchilar va qulay muhit bilan ingliz tilini professional darajada o'rganing. Kelajakka qadam qo'ying!
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="{% url 'courses_list' %}" class="btn btn-primary btn-lg">
+                        <span>Kurslarni ko'rish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline btn-lg">
+                        <span>Bepul konsultatsiya</span>
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" data-counter="{{ settings.students_count|default:500 }}">0</div>
+                        <div class="hero-stat-label">Talabalar</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" data-counter="{{ settings.teachers_count|default:20 }}">0</div>
+                        <div class="hero-stat-label">O'qituvchilar</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value"><span data-counter="{{ settings.success_rate|default:95 }}">0</span>%</div>
+                        <div class="hero-stat-label">Muvaffaqiyat</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual" data-aos="fade-left">
+                <div class="hero-image-wrapper">
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" alt="Students learning">
+                    </div>
+                    
+                    <div class="hero-float-card card-1">
+                        <div class="hero-float-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="hero-float-text">
+                            <h4>IELTS 8.0+</h4>
+                            <p>Kafolatlangan natija</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-float-card card-2">
+                        <div class="hero-float-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="hero-float-text">
+                            <h4>Kichik guruhlar</h4>
+                            <p>8-10 kishi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-float-card card-3">
+                        <div class="hero-float-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="hero-float-text">
+                            <h4>Native speakers</h4>
+                            <p>Xorijlik ustozlar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-sparkles"></i>
+                Nima uchun biz?
+            </span>
+            <h2 class="section-title">Bizni tanlashingizning <span class="text-gradient">sabablari</span></h2>
+            <p class="section-desc">Yillar davomida shakllantirilgan metodika va professional yondashuv</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h3>Tajribali o'qituvchilar</h3>
+                <p>Xalqaro sertifikatlarga ega, 5+ yillik tajribali ustozlar</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Zamonaviy metodika</h3>
+                <p>Dunyo standartlariga mos kommunikativ yondashuv</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <h3>Individual yondashuv</h3>
+                <p>Har bir talabaga alohida e'tibor va qo'llab-quvvatlash</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Kafolatlangan natija</h3>
+                <p>Maqsadga erishguncha qo'llab-quvvatlaymiz</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Courses Section -->
+<section class="section" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-fire"></i>
+                Mashhur kurslar
+            </span>
+            <h2 class="section-title">Eng <span class="text-gradient">ommabop</span> kurslarimiz</h2>
+            <p class="section-desc">Minglab talabalar tomonidan tanlangan kurslar</p>
+        </div>
+        
+        <div class="courses-grid">
+            {% for course in popular_courses %}
+            <div class="course-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="course-image">
+                    {% if course.main_image %}
+                    <img src="{{ course.main_image.url }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop" alt="{{ course.title }}">
+                    {% endif %}
+                    {% if course.is_popular %}
+                    <span class="course-badge popular">Mashhur</span>
+                    {% endif %}
+                </div>
+                <div class="course-content">
+                    <span class="course-subject">{{ course.subject.name }}</span>
+                    <h3 class="course-title">
+                        <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                    </h3>
+                    <p class="course-desc">{{ course.short_description }}</p>
+                    <div class="course-meta">
+                        <span class="course-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ course.duration_months }} oy
+                        </span>
+                        <span class="course-meta-item">
+                            <i class="fas fa-signal"></i>
+                            {{ course.get_level_display }}
+                        </span>
+                    </div>
+                    <div class="course-footer">
+                        <div class="course-price">
+                            {% if course.has_discount %}
+                            {{ course.discount_price|floatformat:0 }} so'm
+                            <span class="old-price">{{ course.price|floatformat:0 }}</span>
+                            {% else %}
+                            {{ course.price|floatformat:0 }} so'm
+                            {% endif %}
+                        </div>
+                        {% if course.teachers.exists %}
+                        <div class="course-teachers">
+                            {% for teacher in course.teachers.all|slice:":3" %}
+                            {% if teacher.photo %}
+                            <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}" title="{{ teacher.full_name }}">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Kurslar mavjud emas</h3>
+                <p>Tez orada yangi kurslar qo'shiladi</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if popular_courses %}
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'courses_list' %}" class="btn btn-primary btn-lg">
+                <span>Barcha kurslar</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Teachers Section -->
+<section class="teachers-section section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-user-graduate"></i>
+                Bizning jamoa
+            </span>
+            <h2 class="section-title">Professional <span class="text-gradient">o'qituvchilar</span></h2>
+            <p class="section-desc">Xalqaro sertifikatlarga ega tajribali mutaxassislar</p>
+        </div>
+        
+        <div class="teachers-grid">
+            {% for teacher in featured_teachers %}
+            <div class="teacher-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="teacher-image">
+                    {% if teacher.photo %}
+                    <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=300&h=300&fit=crop" alt="{{ teacher.full_name }}">
+                    {% endif %}
+                    <div class="teacher-overlay"></div>
+                    <div class="teacher-social">
+                        {% if teacher.telegram %}
+                        <a href="{{ teacher.telegram }}" target="_blank"><i class="fab fa-telegram"></i></a>
+                        {% endif %}
+                        {% if teacher.instagram %}
+                        <a href="{{ teacher.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if teacher.linkedin %}
+                        <a href="{{ teacher.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="teacher-content">
+                    <h3 class="teacher-name">
+                        <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+                    </h3>
+                    <p class="teacher-role">
+                        {% if teacher.ielts_score %}IELTS {{ teacher.ielts_score }}{% endif %}
+                        {% if teacher.cefr_level %}| {{ teacher.cefr_level }}{% endif %}
+                    </p>
+                    <div class="teacher-specs">
+                        {% for spec in teacher.specializations.all|slice:":2" %}
+                        <span class="teacher-spec">{{ spec.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>O'qituvchilar mavjud emas</h3>
+                <p>Tez orada ma'lumotlar qo'shiladi</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if featured_teachers %}
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'teachers_list' %}" class="btn btn-primary btn-lg">
+                <span>Barcha o'qituvchilar</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+{% if testimonials %}
+<section class="testimonials-section section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-quote-left"></i>
+                Fikrlar
+            </span>
+            <h2 class="section-title">Talabalarimiz <span style="color: var(--primary-300);">nima deydi?</span></h2>
+            <p class="section-desc">Muvaffaqiyatga erishgan talabalarimizning fikrlari</p>
+        </div>
+        
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="testimonial-header">
+                    {% if testimonial.student_photo %}
+                    <img src="{{ testimonial.student_photo.url }}" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ testimonial.student_name|urlencode }}&background=3b82f6&color=fff&size=60" alt="{{ testimonial.student_name }}" class="testimonial-avatar">
+                    {% endif %}
+                    <div class="testimonial-info">
+                        <h4>{{ testimonial.student_name }}</h4>
+                        {% if testimonial.course %}
+                        <p>{{ testimonial.course.title }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="testimonial-rating">
+                    {% for i in "12345" %}
+                    <i class="fas fa-star{% if forloop.counter > testimonial.rating %}-o{% endif %}"></i>
+                    {% endfor %}
+                </div>
+                <p class="testimonial-text">{{ testimonial.comment|truncatewords:30 }}</p>
+                {% if testimonial.achievement %}
+                <span class="testimonial-achievement">
+                    <i class="fas fa-trophy"></i>
+                    {{ testimonial.achievement }}
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- News Section -->
+{% if latest_news %}
+<section class="section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">
+                <i class="fas fa-newspaper"></i>
+                Yangiliklar
+            </span>
+            <h2 class="section-title">So'nggi <span class="text-gradient">yangiliklar</span></h2>
+            <p class="section-desc">Markazimizdagi eng so'nggi voqealar va yangiliklardan xabardor bo'ling</p>
+        </div>
+        
+        <div class="news-grid">
+            {% for news_item in latest_news %}
+            <div class="news-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="news-image">
+                    {% if news_item.main_image %}
+                    <img src="{{ news_item.main_image.url }}" alt="{{ news_item.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop" alt="{{ news_item.title }}">
+                    {% endif %}
+                    <div class="news-date">
+                        <span class="news-date-day">{{ news_item.publish_date|date:"d" }}</span>
+                        <span class="news-date-month">{{ news_item.publish_date|date:"M" }}</span>
+                    </div>
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title">
+                        <a href="{% url 'news_detail' news_item.slug %}">{{ news_item.title }}</a>
+                    </h3>
+                    <p class="news-excerpt">{{ news_item.short_description }}</p>
+                    <a href="{% url 'news_detail' news_item.slug %}" class="news-link">
+                        <span>Batafsil</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'news_list' %}" class="btn btn-secondary btn-lg">
+                <span>Barcha yangiliklar</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Kelajakingizni bugunoq boshlang!</h2>
+                <p class="cta-desc">Bepul sinov darsiga yoziling va o'z imkoniyatlaringizni kashf eting. Professional jamoamiz sizni kutmoqda!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'contact' %}" class="btn btn-white btn-lg">
+                        <span>Bepul dars olish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="tel:{{ settings.phone_primary }}" class="btn btn-outline btn-lg" style="border-color: rgba(255,255,255,0.3); color: white;">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ settings.phone_primary|default:"+998 90 123 45 67" }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

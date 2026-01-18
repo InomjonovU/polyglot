@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}O'qituvchilar - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">O'qituvchilar</span>
+            </nav>
+            <h1 class="page-title">Bizning <span class="text-gradient">o'qituvchilarimiz</span></h1>
+            <p class="page-desc">Xalqaro sertifikatlarga ega, tajribali va professional o'qituvchilar jamoasi</p>
+        </div>
+    </div>
+</section>
+
+<!-- Teachers Section -->
+<section class="section-sm">
+    <div class="container">
+        <!-- Filter Bar -->
+        <div class="filter-bar" data-aos="fade-up">
+            <form class="filter-form" method="GET" action="">
+                <div class="filter-group">
+                    <label class="filter-label">Qidiruv</label>
+                    <input type="text" name="search" class="filter-input" placeholder="O'qituvchi ismini kiriting..." value="{{ search }}">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Ixtisoslik bo'yicha</label>
+                    <select name="subject" class="filter-select">
+                        <option value="">Barcha ixtisosliklar</option>
+                        {% for subject in subjects %}
+                        <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %}selected{% endif %}>{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary filter-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Qidirish</span>
+                </button>
+            </form>
+        </div>
+        
+        <!-- Teachers Grid -->
+        <div class="teachers-grid">
+            {% for teacher in teachers %}
+            <div class="teacher-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:50 }}">
+                <div class="teacher-image">
+                    {% if teacher.photo %}
+                    <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=300&h=300&fit=crop" alt="{{ teacher.full_name }}">
+                    {% endif %}
+                    <div class="teacher-overlay"></div>
+                    <div class="teacher-social">
+                        {% if teacher.telegram %}
+                        <a href="{{ teacher.telegram }}" target="_blank"><i class="fab fa-telegram"></i></a>
+                        {% endif %}
+                        {% if teacher.instagram %}
+                        <a href="{{ teacher.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if teacher.linkedin %}
+                        <a href="{{ teacher.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="teacher-content">
+                    <h3 class="teacher-name">
+                        <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+                    </h3>
+                    <p class="teacher-role">
+                        {% if teacher.ielts_score %}IELTS {{ teacher.ielts_score }}{% endif %}
+                        {% if teacher.cefr_level %}| {{ teacher.cefr_level }}{% endif %}
+                        {% if not teacher.ielts_score and not teacher.cefr_level %}
+                        {{ teacher.experience_years }}+ yil tajriba
+                        {% endif %}
+                    </p>
+                    <div class="teacher-specs">
+                        {% for spec in teacher.specializations.all|slice:":3" %}
+                        <span class="teacher-spec">{{ spec.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>O'qituvchilar topilmadi</h3>
+                <p>Qidiruv parametrlarini o'zgartirib ko'ring</p>
+                <a href="{% url 'teachers_list' %}" class="btn btn-primary">
+                    <span>Barcha o'qituvchilar</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if teachers.has_other_pages %}
+        <nav class="pagination">
+            {% if teachers.has_previous %}
+            <a href="?page={{ teachers.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            {% for num in teachers.paginator.page_range %}
+                {% if teachers.number == num %}
+                <span class="pagination-current">{{ num }}</span>
+                {% elif num > teachers.number|add:'-3' and num < teachers.number|add:'3' %}
+                <a href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}" class="pagination-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if teachers.has_next %}
+            <a href="?page={{ teachers.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Siz ham bizning jamoamizga qo'shilmoqchimisiz?</h2>
+                <p class="cta-desc">Agar siz tajribali o'qituvchi bo'lsangiz va o'qitishga qiziqsangiz, bizga ariza yuboring!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'teacher_apply' %}" class="btn btn-white btn-lg">
+                        <span>O'qituvchi bo'lish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

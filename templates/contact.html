@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aloqa - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Aloqa</span>
+            </nav>
+            <h1 class="page-title">Biz bilan <span class="text-gradient">bog'laning</span></h1>
+            <p class="page-desc">Savollaringiz bormi? Biz doimo yordam berishga tayyormiz!</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section-sm">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Info -->
+            <div>
+                <div class="contact-info-cards">
+                    <div class="contact-info-card" data-aos="fade-up" data-aos-delay="0">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-info-content">
+                            <h4>Manzil</h4>
+                            <p>{{ settings.address|default:"Toshkent shahar, Chilonzor tumani, 1-kvartal" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-info-content">
+                            <h4>Telefon</h4>
+                            <p>
+                                <a href="tel:{{ settings.phone_primary }}">{{ settings.phone_primary|default:"+998 90 123 45 67" }}</a>
+                                {% if settings.phone_secondary %}
+                                <br>
+                                <a href="tel:{{ settings.phone_secondary }}">{{ settings.phone_secondary }}</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info-content">
+                            <h4>Email</h4>
+                            <p><a href="mailto:{{ settings.email }}">{{ settings.email|default:"info@polyglotlc.uz" }}</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="contact-info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-info-content">
+                            <h4>Ish vaqti</h4>
+                            <p>{{ settings.working_hours|default:"Dushanba - Shanba: 9:00 - 18:00" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map -->
+                <div class="contact-map" data-aos="fade-up">
+                    {% if settings.google_maps_embed %}
+                    {{ settings.google_maps_embed|safe }}
+                    {% else %}
+                    <iframe src="https://www.google.com/maps/place/41%C2%B007'48.1%22N+72%C2%B005'17.7%22E/@41.130025,72.0875923,208m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d41.130024!4d72.088236?entry=ttu&g_ep=EgoyMDI2MDExMy4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D" allowfullscreen="" loading="lazy"></iframe>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="contact-form-card" data-aos="fade-left">
+                <h3 class="contact-form-title">Xabar yuborish</h3>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label required">To'liq ismingiz</label>
+                        <input type="text" name="full_name" class="form-input" placeholder="Ismingiz Familiyangiz" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Telefon raqam</label>
+                        <input type="tel" name="phone" class="form-input" placeholder="+998 90 123 45 67" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email (ixtiyoriy)</label>
+                        <input type="email" name="email" class="form-input" placeholder="email@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Mavzu</label>
+                        <select name="subject" class="form-select">
+                            <option value="">Mavzuni tanlang</option>
+                            <option value="Kurslar haqida">Kurslar haqida</option>
+                            <option value="Narxlar haqida">Narxlar haqida</option>
+                            <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
+                            <option value="Hamkorlik">Hamkorlik</option>
+                            <option value="Boshqa">Boshqa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Xabaringiz</label>
+                        <textarea name="message" class="form-textarea" placeholder="Xabaringizni yozing..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <span>Yuborish</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Links -->
+<section class="section-sm" style="background: var(--gray-50);">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h3 style="margin-bottom: var(--space-lg);">Ijtimoiy tarmoqlarda kuzating</h3>
+            <div class="d-flex gap-2" style="justify-content: center;">
+                {% if settings.telegram %}
+                <a href="{{ settings.telegram }}" target="_blank" class="btn btn-outline btn-lg">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+                {% endif %}
+                {% if settings.instagram %}
+                <a href="{{ settings.instagram }}" target="_blank" class="btn btn-outline btn-lg">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                {% endif %}
+                {% if settings.facebook %}
+                <a href="{{ settings.facebook }}" target="_blank" class="btn btn-outline btn-lg">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+                {% endif %}
+                {% if settings.youtube %}
+                <a href="{{ settings.youtube }}" target="_blank" class="btn btn-outline btn-lg">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

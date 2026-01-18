@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yangiliklar - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Yangiliklar</span>
+            </nav>
+            <h1 class="page-title">So'nggi <span class="text-gradient">yangiliklar</span></h1>
+            <p class="page-desc">O'quv markazi hayotidan eng so'nggi voqealar va yangiliklardan xabardor bo'ling</p>
+        </div>
+    </div>
+</section>
+
+<!-- News Section -->
+<section class="section-sm">
+    <div class="container">
+        <!-- Featured News -->
+        {% if featured_news %}
+        <div class="mb-5" data-aos="fade-up">
+            <h3 style="margin-bottom: var(--space-lg);">Tanlangan yangiliklar</h3>
+            <div class="news-grid">
+                {% for news_item in featured_news %}
+                <div class="news-card">
+                    <div class="news-image">
+                        {% if news_item.main_image %}
+                        <img src="{{ news_item.main_image.url }}" alt="{{ news_item.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop" alt="{{ news_item.title }}">
+                        {% endif %}
+                        <div class="news-date">
+                            <span class="news-date-day">{{ news_item.publish_date|date:"d" }}</span>
+                            <span class="news-date-month">{{ news_item.publish_date|date:"M" }}</span>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">
+                            <a href="{% url 'news_detail' news_item.slug %}">{{ news_item.title }}</a>
+                        </h3>
+                        <p class="news-excerpt">{{ news_item.short_description }}</p>
+                        <a href="{% url 'news_detail' news_item.slug %}" class="news-link">
+                            <span>Batafsil</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Filter Bar -->
+        <div class="filter-bar" data-aos="fade-up">
+            <form class="filter-form" method="GET" action="">
+                <div class="filter-group" style="flex: 2;">
+                    <label class="filter-label">Qidiruv</label>
+                    <input type="text" name="search" class="filter-input" placeholder="Yangilik sarlavhasini kiriting..." value="{{ search }}">
+                </div>
+                <button type="submit" class="btn btn-primary filter-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Qidirish</span>
+                </button>
+            </form>
+        </div>
+        
+        <!-- News Grid -->
+        <div class="news-grid">
+            {% for news_item in news %}
+            <div class="news-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:50 }}">
+                <div class="news-image">
+                    {% if news_item.main_image %}
+                    <img src="{{ news_item.main_image.url }}" alt="{{ news_item.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop" alt="{{ news_item.title }}">
+                    {% endif %}
+                    <div class="news-date">
+                        <span class="news-date-day">{{ news_item.publish_date|date:"d" }}</span>
+                        <span class="news-date-month">{{ news_item.publish_date|date:"M" }}</span>
+                    </div>
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title">
+                        <a href="{% url 'news_detail' news_item.slug %}">{{ news_item.title }}</a>
+                    </h3>
+                    <p class="news-excerpt">{{ news_item.short_description }}</p>
+                    <a href="{% url 'news_detail' news_item.slug %}" class="news-link">
+                        <span>Batafsil</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <h3>Yangiliklar topilmadi</h3>
+                <p>Tez orada yangi ma'lumotlar qo'shiladi</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if news.has_other_pages %}
+        <nav class="pagination">
+            {% if news.has_previous %}
+            <a href="?page={{ news.previous_page_number }}{% if search %}&search={{ search }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            {% for num in news.paginator.page_range %}
+                {% if news.number == num %}
+                <span class="pagination-current">{{ num }}</span>
+                {% elif num > news.number|add:'-3' and num < news.number|add:'3' %}
+                <a href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}" class="pagination-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if news.has_next %}
+            <a href="?page={{ news.next_page_number }}{% if search %}&search={{ search }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

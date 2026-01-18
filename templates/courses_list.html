@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kurslar - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Kurslar</span>
+            </nav>
+            <h1 class="page-title">Bizning <span class="text-gradient">kurslarimiz</span></h1>
+            <p class="page-desc">O'zingizga mos kursni tanlang va ingliz tilini professional darajada o'rganing</p>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section class="section-sm">
+    <div class="container">
+        <!-- Filter Bar -->
+        <div class="filter-bar" data-aos="fade-up">
+            <form class="filter-form" method="GET" action="">
+                <div class="filter-group">
+                    <label class="filter-label">Qidiruv</label>
+                    <input type="text" name="search" class="filter-input" placeholder="Kurs nomini kiriting..." value="{{ search }}">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Fan bo'yicha</label>
+                    <select name="subject" class="filter-select">
+                        <option value="">Barcha fanlar</option>
+                        {% for subject in subjects %}
+                        <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %}selected{% endif %}>{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Daraja</label>
+                    <select name="level" class="filter-select">
+                        <option value="">Barcha darajalar</option>
+                        <option value="beginner" {% if selected_level == 'beginner' %}selected{% endif %}>Beginner</option>
+                        <option value="elementary" {% if selected_level == 'elementary' %}selected{% endif %}>Elementary</option>
+                        <option value="pre_intermediate" {% if selected_level == 'pre_intermediate' %}selected{% endif %}>Pre-Intermediate</option>
+                        <option value="intermediate" {% if selected_level == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                        <option value="upper_intermediate" {% if selected_level == 'upper_intermediate' %}selected{% endif %}>Upper-Intermediate</option>
+                        <option value="advanced" {% if selected_level == 'advanced' %}selected{% endif %}>Advanced</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary filter-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Qidirish</span>
+                </button>
+            </form>
+        </div>
+        
+        <!-- Courses Grid -->
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:50 }}">
+                <div class="course-image">
+                    {% if course.main_image %}
+                    <img src="{{ course.main_image.url }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop" alt="{{ course.title }}">
+                    {% endif %}
+                    {% if course.is_popular %}
+                    <span class="course-badge popular">Mashhur</span>
+                    {% elif course.is_featured %}
+                    <span class="course-badge">Tavsiya</span>
+                    {% endif %}
+                </div>
+                <div class="course-content">
+                    <span class="course-subject">{{ course.subject.name }}</span>
+                    <h3 class="course-title">
+                        <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                    </h3>
+                    <p class="course-desc">{{ course.short_description }}</p>
+                    <div class="course-meta">
+                        <span class="course-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ course.duration_months }} oy
+                        </span>
+                        <span class="course-meta-item">
+                            <i class="fas fa-signal"></i>
+                            {{ course.get_level_display }}
+                        </span>
+                        <span class="course-meta-item">
+                            <i class="fas fa-calendar-week"></i>
+                            Haftada {{ course.lessons_per_week }}x
+                        </span>
+                    </div>
+                    <div class="course-footer">
+                        <div class="course-price">
+                            {% if course.has_discount %}
+                            {{ course.discount_price|floatformat:0 }} so'm
+                            <span class="old-price">{{ course.price|floatformat:0 }}</span>
+                            {% else %}
+                            {{ course.price|floatformat:0 }} so'm
+                            {% endif %}
+                        </div>
+                        {% if course.teachers.exists %}
+                        <div class="course-teachers">
+                            {% for teacher in course.teachers.all|slice:":3" %}
+                            {% if teacher.photo %}
+                            <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}" title="{{ teacher.full_name }}">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Kurslar topilmadi</h3>
+                <p>Qidiruv parametrlarini o'zgartirib ko'ring</p>
+                <a href="{% url 'courses_list' %}" class="btn btn-primary">
+                    <span>Barcha kurslar</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if courses.has_other_pages %}
+        <nav class="pagination">
+            {% if courses.has_previous %}
+            <a href="?page={{ courses.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            {% for num in courses.paginator.page_range %}
+                {% if courses.number == num %}
+                <span class="pagination-current">{{ num }}</span>
+                {% elif num > courses.number|add:'-3' and num < courses.number|add:'3' %}
+                <a href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}" class="pagination-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if courses.has_next %}
+            <a href="?page={{ courses.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}" class="pagination-link">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Qaysi kursni tanlashni bilmayapsizmi?</h2>
+                <p class="cta-desc">Bizning mutaxassislarimiz sizga eng mos kursni tanlashda yordam beradi. Bepul konsultatsiya oling!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'contact' %}" class="btn btn-white btn-lg">
+                        <span>Konsultatsiya olish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

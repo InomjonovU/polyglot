@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }} - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <a href="{% url 'news_list' %}">Yangiliklar</a>
+                <span>/</span>
+                <span class="current">{{ news.title|truncatewords:5 }}</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- News Detail Section -->
+<section class="detail-section">
+    <div class="container">
+        <div class="detail-grid">
+            <!-- Main Content -->
+            <div class="detail-main">
+                <div class="news-detail-image" data-aos="fade-up">
+                    {% if news.main_image %}
+                    <img src="{{ news.main_image.url }}" alt="{{ news.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=450&fit=crop" alt="{{ news.title }}">
+                    {% endif %}
+                </div>
+                
+                <h1 style="font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: var(--space-lg);" data-aos="fade-up">{{ news.title }}</h1>
+                
+                <div class="news-detail-meta" data-aos="fade-up">
+                    <span class="news-detail-meta-item">
+                        <i class="fas fa-calendar"></i>
+                        {{ news.publish_date|date:"d F, Y" }}
+                    </span>
+                    {% if news.author %}
+                    <span class="news-detail-meta-item">
+                        <i class="fas fa-user"></i>
+                        {{ news.author.get_full_name|default:news.author.username }}
+                    </span>
+                    {% endif %}
+                    <span class="news-detail-meta-item">
+                        <i class="fas fa-eye"></i>
+                        {{ news.views_count }} ko'rilgan
+                    </span>
+                </div>
+                
+                <div class="news-detail-content" data-aos="fade-up">
+                    {{ news.content|safe|linebreaks }}
+                </div>
+                
+                {% if news.gallery_images.exists %}
+                <div class="mt-5" data-aos="fade-up">
+                    <h3 style="margin-bottom: var(--space-lg);">Galereya</h3>
+                    <div class="gallery-grid">
+                        {% for image in news.gallery_images.all %}
+                        <div class="gallery-item">
+                            <img src="{{ image.image.url }}" alt="{{ image.caption|default:news.title }}">
+                            {% if image.caption %}
+                            <div class="gallery-overlay">
+                                <span class="gallery-title">{{ image.caption }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Share -->
+                <div class="mt-5 pt-4" style="border-top: 1px solid var(--gray-200);" data-aos="fade-up">
+                    <h4 style="margin-bottom: var(--space-md);">Ulashish</h4>
+                    <div class="d-flex gap-2">
+                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-telegram"></i> Telegram
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ news.title }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="detail-sidebar">
+                <div class="sidebar-card" data-aos="fade-left">
+                    <h4 style="margin-bottom: var(--space-lg);">So'nggi yangiliklar</h4>
+                    {% for related_item in related_news %}
+                    <div style="display: flex; gap: var(--space-md); margin-bottom: var(--space-lg); {% if not forloop.last %}padding-bottom: var(--space-lg); border-bottom: 1px solid var(--gray-100);{% endif %}">
+                        <div style="width: 80px; height: 60px; flex-shrink: 0; border-radius: var(--radius-md); overflow: hidden;">
+                            {% if related_item.main_image %}
+                            <img src="{{ related_item.main_image.url }}" alt="{{ related_item.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&h=60&fit=crop" alt="{{ related_item.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h5 style="font-size: 0.9375rem; margin-bottom: 4px;">
+                                <a href="{% url 'news_detail' related_item.slug %}" style="color: var(--gray-800);">{{ related_item.title|truncatewords:8 }}</a>
+                            </h5>
+                            <span style="font-size: 0.8125rem; color: var(--gray-500);">{{ related_item.publish_date|date:"d M, Y" }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="color: var(--gray-500);">Boshqa yangiliklar yo'q</p>
+                    {% endfor %}
+                </div>
+                
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+                    <h4 style="margin-bottom: var(--space-md);">Savollaringiz bormi?</h4>
+                    <p style="color: var(--gray-600); margin-bottom: var(--space-lg);">Biz bilan bog'laning va barcha savollaringizga javob oling.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-primary w-100">
+                        <span>Bog'lanish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

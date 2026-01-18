@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ teacher.full_name }} - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <a href="{% url 'teachers_list' %}">O'qituvchilar</a>
+                <span>/</span>
+                <span class="current">{{ teacher.full_name }}</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- Teacher Detail Section -->
+<section class="detail-section">
+    <div class="container">
+        <!-- Teacher Header -->
+        <div class="teacher-detail-header" data-aos="fade-up">
+            <div class="teacher-detail-photo">
+                {% if teacher.photo %}
+                <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=400&fit=crop" alt="{{ teacher.full_name }}">
+                {% endif %}
+            </div>
+            
+            <div class="teacher-detail-info">
+                <h1>{{ teacher.full_name }}</h1>
+                <p class="teacher-detail-role">
+                    {{ teacher.education }}
+                    {% if teacher.experience_years %}| {{ teacher.experience_years }}+ yil tajriba{% endif %}
+                </p>
+                
+                <div class="teacher-detail-specs">
+                    {% if teacher.ielts_score %}
+                    <span class="teacher-detail-spec">
+                        <i class="fas fa-certificate"></i> IELTS {{ teacher.ielts_score }}
+                    </span>
+                    {% endif %}
+                    {% if teacher.toefl_score %}
+                    <span class="teacher-detail-spec">
+                        <i class="fas fa-certificate"></i> TOEFL {{ teacher.toefl_score }}
+                    </span>
+                    {% endif %}
+                    {% if teacher.cefr_level %}
+                    <span class="teacher-detail-spec">
+                        <i class="fas fa-language"></i> {{ teacher.cefr_level }}
+                    </span>
+                    {% endif %}
+                    {% for spec in teacher.specializations.all %}
+                    <span class="teacher-detail-spec">{{ spec.name }}</span>
+                    {% endfor %}
+                </div>
+                
+                <p class="teacher-detail-bio">{{ teacher.bio }}</p>
+                
+                <div class="teacher-detail-social">
+                    {% if teacher.telegram %}
+                    <a href="{{ teacher.telegram }}" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    {% endif %}
+                    {% if teacher.instagram %}
+                    <a href="{{ teacher.instagram }}" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                    {% if teacher.facebook %}
+                    <a href="{{ teacher.facebook }}" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    {% endif %}
+                    {% if teacher.linkedin %}
+                    <a href="{{ teacher.linkedin }}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Full Bio -->
+        <div class="course-detail-content" data-aos="fade-up">
+            <h3>Biografiya</h3>
+            <p>{{ teacher.full_bio|linebreaks }}</p>
+            
+            {% if teacher.skills %}
+            <h3>Ko'nikmalar</h3>
+            <ul class="course-detail-list">
+                {% for skill in teacher.skills.splitlines %}
+                {% if skill.strip %}
+                <li>{{ skill.strip }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Teacher's Courses -->
+{% if courses %}
+<section class="related-section">
+    <div class="container">
+        <div class="related-header">
+            <h2 class="related-title">{{ teacher.first_name }}ning kurslari</h2>
+            <a href="{% url 'courses_list' %}" class="related-link">
+                <span>Barcha kurslar</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                <div class="course-image">
+                    {% if course.main_image %}
+                    <img src="{{ course.main_image.url }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop" alt="{{ course.title }}">
+                    {% endif %}
+                </div>
+                <div class="course-content">
+                    <span class="course-subject">{{ course.subject.name }}</span>
+                    <h3 class="course-title">
+                        <a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                    </h3>
+                    <p class="course-desc">{{ course.short_description }}</p>
+                    <div class="course-meta">
+                        <span class="course-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ course.duration_months }} oy
+                        </span>
+                        <span class="course-meta-item">
+                            <i class="fas fa-signal"></i>
+                            {{ course.get_level_display }}
+                        </span>
+                    </div>
+                    <div class="course-footer">
+                        <div class="course-price">
+                            {{ course.final_price|floatformat:0 }} so'm
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="cta-section section-sm">
+    <div class="container">
+        <div class="cta-box" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">{{ teacher.first_name }}dan dars olmoqchimisiz?</h2>
+                <p class="cta-desc">Hoziroq ro'yxatdan o'ting va professional o'qituvchidan bilim oling!</p>
+                <div class="cta-actions">
+                    <a href="{% url 'contact' %}" class="btn btn-white btn-lg">
+                        <span>Bog'lanish</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

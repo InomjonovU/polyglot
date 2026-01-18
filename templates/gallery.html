@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Galereya - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <nav class="breadcrumb">
+                <a href="{% url 'home' %}">Bosh sahifa</a>
+                <span>/</span>
+                <span class="current">Galereya</span>
+            </nav>
+            <h1 class="page-title">Foto <span class="text-gradient">galereya</span></h1>
+            <p class="page-desc">O'quv markazi hayotidan suratlar</p>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="section-sm">
+    <div class="container">
+        <!-- Category Filter -->
+        <div class="d-flex gap-2 mb-4" style="flex-wrap: wrap; justify-content: center;" data-aos="fade-up">
+            <a href="{% url 'gallery' %}"
+                class="btn {% if not selected_category %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                Barchasi
+            </a>
+            {% for category in categories %}
+            <a href="{% url 'gallery' %}?category={{ category.slug }}"
+                class="btn {% if selected_category == category.slug %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid">
+            {% for image in images %}
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:25 }}">
+                <img src="{{ image.image.url }}" alt="{{ image.display_title }}">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">{{ image.display_title }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h3>Rasmlar mavjud emas</h3>
+                <p>Tez orada galereya to'ldiriladi</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if images.has_other_pages %}
+        <nav class="pagination">
+            {% if images.has_previous %}
+            <a href="?page={{ images.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}"
+                class="pagination-link">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+
+            {% for num in images.paginator.page_range %}
+            {% if images.number == num %}
+            <span class="pagination-current">{{ num }}</span>
+            {% elif num > images.number|add:'-3' and num < images.number|add:'3' %} <a
+                href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}"
+                class="pagination-link">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if images.has_next %}
+                <a href="?page={{ images.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}"
+                    class="pagination-link">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

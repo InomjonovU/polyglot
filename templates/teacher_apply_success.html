@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ariza yuborildi - {{ settings.site_name|default:"PolyglotLC" }}{% endblock %}
+
+{% block content %}
+<!-- Success Section -->
+<section class="success-section">
+    <div class="container">
+        <div class="success-card" data-aos="fade-up">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1 class="success-title">Arizangiz yuborildi!</h1>
+            <p class="success-desc">
+                Rahmat! Arizangiz muvaffaqiyatli qabul qilindi. 
+                Bizning mutaxassislarimiz tez orada siz bilan bog'lanadi.
+            </p>
+            <div class="d-flex gap-2" style="justify-content: center;">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    <i class="fas fa-home"></i>
+                    <span>Bosh sahifaga</span>
+                </a>
+                <a href="{% url 'courses_list' %}" class="btn btn-outline">
+                    <span>Kurslarni ko'rish</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
