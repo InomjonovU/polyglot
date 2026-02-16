@@ -135,24 +135,24 @@
     <div class="container">
         <div class="text-center" data-aos="fade-up">
             <h3 style="margin-bottom: var(--space-lg);">Ijtimoiy tarmoqlarda kuzating</h3>
-            <div class="d-flex gap-2" style="justify-content: center;">
+            <div class="d-flex gap-2" style="justify-content: center; flex-wrap: wrap;">
                 {% if settings.telegram %}
-                <a href="{{ settings.telegram }}" target="_blank" class="btn btn-outline btn-lg">
+                <a href="{{ settings.telegram }}" target="_blank" class="btn btn-outline">
                     <i class="fab fa-telegram"></i> Telegram
                 </a>
                 {% endif %}
                 {% if settings.instagram %}
-                <a href="{{ settings.instagram }}" target="_blank" class="btn btn-outline btn-lg">
+                <a href="{{ settings.instagram }}" target="_blank" class="btn btn-outline">
                     <i class="fab fa-instagram"></i> Instagram
                 </a>
                 {% endif %}
                 {% if settings.facebook %}
-                <a href="{{ settings.facebook }}" target="_blank" class="btn btn-outline btn-lg">
+                <a href="{{ settings.facebook }}" target="_blank" class="btn btn-outline">
                     <i class="fab fa-facebook"></i> Facebook
                 </a>
                 {% endif %}
                 {% if settings.youtube %}
-                <a href="{{ settings.youtube }}" target="_blank" class="btn btn-outline btn-lg">
+                <a href="{{ settings.youtube }}" target="_blank" class="btn btn-outline">
                     <i class="fab fa-youtube"></i> YouTube
                 </a>
                 {% endif %}

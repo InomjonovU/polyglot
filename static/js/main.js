@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initPreloader() {
     const preloader = document.getElementById('preloader');
     if (!preloader) return;
-    
+
     window.addEventListener('load', function() {
         setTimeout(function() {
             preloader.classList.add('hidden');
             document.body.style.overflow = '';
-        }, 1500);
+        }, 300);
     });
 }
 
