@@ -5,7 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all modules
-    initPreloader();
     initCustomCursor();
     initHeader();
     initMobileMenu();
@@ -18,21 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initAnimations();
     initCounters();
 });
-
-/**
- * Preloader
- */
-function initPreloader() {
-    const preloader = document.getElementById('preloader');
-    if (!preloader) return;
-
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            preloader.classList.add('hidden');
-            document.body.style.overflow = '';
-        }, 300);
-    });
-}
 
 /**
  * Custom Cursor
